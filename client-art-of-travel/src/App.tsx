@@ -1,7 +1,8 @@
 import React from "react";
 
-const app: React.FC = () => {
-  return <div></div>;
+const App = () => {
+  const [text, setText] = 
+  return <div>{text}</div>;
 };
 
-export default app;
+export default App;
