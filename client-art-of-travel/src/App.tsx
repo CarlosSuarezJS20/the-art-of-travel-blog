@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 
 const App: React.FC = () => {
-  const [email, setText] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div>
-      <input type='email' />
-      <button>send</button>
+      <label>email</label>
+      <input type='email' onChange={(e) => {}} />
+      <label>password</label>
+      <input type='password' />
+      <button>submit</button>
     </div>
   );
 };

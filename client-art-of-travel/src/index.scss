@@ -1,0 +1,27 @@
+@import "./scss/_variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $primary-font;
+  background: $secondary-brand-color;
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+  color: $secondary-brand-color;
+}
+img {
+  width: 100%;
+  display: block;
+  margin: auto;
+}
