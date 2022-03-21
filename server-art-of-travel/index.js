@@ -33,6 +33,7 @@ app.get("/api/get_users", (req, res) => {
 app.post("/api/users", async (req, res)=>{
     try {
         const email_address = req.body.email_address;
+        // creating hashed email. 
         const protectedPassword = await bcrypt.hash(req.body.password, 10)
         console.log( protectedPassword )
 
