@@ -12,21 +12,37 @@ const db = mysql.createPool({
     password: 'password',
     database:'the_art_of_travel'
 })
+// hash Passwords logic 
+const bcrypt = require('bcrypt'); 
+
 
 app.use(cors())
 app.use(express.json()); 
 app.use(bodyParser.urlencoded({extended: true}))
 
-
-app.post("/api/users", (req, res)=>{
-    const queryInsert = "INSERT INTO users_db (email_address, password) VALUES (?,?)";  
-    const email_address = req.body.email_address;
-    const password = req.body.password;
-
-    db.query(queryInsert, [email_address, password], (err, result) => {
-        console.log(err);
-
+// Request all users
+app.get("/api/get_users", (req, res) => {
+    const querySelect = "SELECT * FROM users_db";
+    db.query(querySelect, (err, results)=>{
+        console.log(results);
+        res.send(results);
     })
+})
+
+// Sending a new user to database 
+app.post("/api/users", async (req, res)=>{
+    try {
+        const email_address = req.body.email_address;
+        const protectedPassword = await bcrypt.hash(req.body.password, 10)
+        console.log( protectedPassword )
+
+        const queryInsert = "INSERT INTO users_db (email_address, password) VALUES (?,?)";  
+        db.query(queryInsert, [email_address, protectedPassword], (err, result) => {
+            console.log(err); 
+        })     
+    } catch {
+        console.log('there was an error'); 
+    }
 })
 
 app.listen(port, () => {
