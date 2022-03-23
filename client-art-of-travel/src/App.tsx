@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 
 type user = { id: number; email_address: string; password: string };
@@ -8,8 +8,7 @@ const App: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<users>([]);
-
-  useEffect(() => {}, []);
+  const [registering, setRegistering] = useState(false);
 
   const onchangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -24,21 +23,29 @@ const App: React.FC = () => {
   };
 
   const submitRequest = () => {
-    const apiURL = "http://localhost:3001/api/users";
+    const apiURL = registering
+      ? "http://localhost:3001/api/register"
+      : "http://localhost:3001/api/login";
     const details = {
       email_address: email,
       password: password,
     };
-    Axios.post(apiURL, details).then(() => {
-      alert("Success send");
+    Axios.post(apiURL, details).then((res) => {
+      console.log(res);
     });
   };
 
   const requestAllUsers = () => {
-    const apiURL = "http://localhost:3001/api/get_users";
+    const apiURL = "http://localhost:3001/api/users";
     Axios.get(apiURL).then((res) => {
+      console.log(res);
       setUsers([...res.data]);
     });
+  };
+
+  // Registration handler
+  const registrationHandler = () => {
+    setRegistering(!registering);
   };
 
   return (
@@ -58,7 +65,14 @@ const App: React.FC = () => {
             onchangeHandler(e, "password");
           }}
         />
-        <button onClick={submitRequest}>submit</button>
+        <button onClick={submitRequest}>
+          {registering ? "register" : "log in"}
+        </button>
+      </div>
+      <div>
+        <button onClick={registrationHandler}>
+          {registering ? "back" : "register"}
+        </button>
       </div>
       <div>
         <button onClick={requestAllUsers}>Show users</button>
@@ -66,8 +80,6 @@ const App: React.FC = () => {
       <div>
         {users &&
           users.map((user) => {
-            console.log(users);
-            console.log(user);
             return <h1 key={user.id}>{user.email_address}</h1>;
           })}
       </div>
