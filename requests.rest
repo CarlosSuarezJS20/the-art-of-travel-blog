@@ -1,0 +1,12 @@
+GET http://localhost:3001/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Y2Flc2NvQGhvdG1haWwuY29t.824j-jt9bG2WcKY_VRTkL90CgReRDkyVJH72-22XAt0
+
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "email_address":"caesco@hotmail.com",
+    "password":"sarita83"
+}

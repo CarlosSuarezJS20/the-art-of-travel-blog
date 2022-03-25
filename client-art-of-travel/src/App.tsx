@@ -9,6 +9,7 @@ const App: React.FC = () => {
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<users>([]);
   const [registering, setRegistering] = useState(false);
+  const [token, setToken] = useState<null | string>(null);
 
   const onchangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -30,17 +31,25 @@ const App: React.FC = () => {
       email_address: email,
       password: password,
     };
-    Axios.post(apiURL, details).then((res) => {
-      console.log(res);
-    });
+    Axios.post(apiURL, details)
+      .then((res) => {
+        console.log(res.data);
+        setToken(res.data.accessToken);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const requestAllUsers = () => {
     const apiURL = "http://localhost:3001/api/users";
-    Axios.get(apiURL).then((res) => {
-      console.log(res);
-      setUsers([...res.data]);
-    });
+    console.log(token);
+    Axios.get(apiURL, { headers: { authorization: "Bearer " + token } }).then(
+      (res) => {
+        console.log(res);
+        setUsers([...res.data]);
+      }
+    );
   };
 
   // Registration handler
